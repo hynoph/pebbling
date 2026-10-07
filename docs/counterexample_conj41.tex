@@ -1,0 +1,217 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,tikz}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{conjecture}{Conjecture 4.1 of \cite{PPS}}
+\title{A counterexample to a conjecture of Petr, Portier and Stolarczyk}
+\author{Eric Lee}
+\date{\today}
+\begin{document}
+\maketitle
+
+\noindent For a pebbling distribution $P$ on a graph, the \emph{value} of a vertex
+$x$ is $v(x) = \sum_y P(y)\,2^{-d(x,y)}$. In~\cite{PPS} the following is
+conjectured.
+
+\begin{conjecture}
+Let $P$ be a solvable pebbling distribution on the grid. Then for all vertices
+$x$ that have degree $4$, $v(x) \ge \frac32$.
+\end{conjecture}
+
+\begin{theorem}
+The distribution $P$ in Figure~\ref{fig:cex} on the $10 \times 10$ grid has
+$|P| = 57$, is solvable, and satisfies $v(5,5) = \frac{379}{256} < \frac32$.
+\end{theorem}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.55]
+  \fill[gray!35] (5,4) rectangle (6,5);
+  \draw[gray!70, very thin] (0,0) grid (10,10);
+  \node at (0+0.5,9+0.5) {2};
+\node at (3+0.5,9+0.5) {2};
+\node at (6+0.5,9+0.5) {3};
+\node at (8+0.5,9+0.5) {4};
+\node at (0+0.5,8+0.5) {3};
+\node at (1+0.5,8+0.5) {2};
+\node at (2+0.5,8+0.5) {2};
+\node at (3+0.5,8+0.5) {3};
+\node at (0+0.5,7+0.5) {3};
+\node at (1+0.5,7+0.5) {2};
+\node at (2+0.5,7+0.5) {2};
+\node at (3+0.5,7+0.5) {3};
+\node at (0+0.5,6+0.5) {2};
+\node at (8+0.5,6+0.5) {4};
+\node at (6+0.5,5+0.5) {1};
+\node at (0+0.5,3+0.5) {1};
+\node at (3+0.5,3+0.5) {1};
+\node at (7+0.5,3+0.5) {2};
+\node at (6+0.5,2+0.5) {1};
+\node at (0+0.5,1+0.5) {4};
+\node at (3+0.5,1+0.5) {4};
+\node at (6+0.5,1+0.5) {1};
+\node at (8+0.5,1+0.5) {3};
+\node at (8+0.5,0+0.5) {2};
+  \foreach \j in {0,...,9} \node[font=\scriptsize, gray] at (\j+0.5,10.45) {\j};
+  \foreach \i in {0,...,9} \node[font=\scriptsize, gray] at (-0.45,9-\i+0.5) {\i};
+  \node[font=\scriptsize] at (5.5,4.5) {$x$};
+\end{tikzpicture}
+\caption{The distribution $P$, with $57$ pebbles. Rows and columns are indexed
+from $0$ as shown; empty cells carry no pebble. The shaded vertex $x = (5,5)$
+has degree $4$ and carries no pebble.}
+\label{fig:cex}
+\end{figure}
+
+\subsection*{The value}
+Summing the contributions $P(y)\,2^{-d(x,y)}$ of the $24$ occupied vertices
+$y$, in row order:
+\begin{align*}
+v(5,5) = {}&
+\tfrac{1}{512} + \tfrac{1}{64} + \tfrac{3}{64} + \tfrac{1}{64}
++ \tfrac{3}{512} + \tfrac{1}{128} + \tfrac{1}{64} + \tfrac{3}{64}
++ \tfrac{3}{256} + \tfrac{1}{64} + \tfrac{1}{32} + \tfrac{3}{32}\\
+&+ \tfrac{1}{64} + \tfrac18 + \tfrac14 + \tfrac{1}{64} + \tfrac18
++ \tfrac14 + \tfrac18 + \tfrac{1}{64} + \tfrac18 + \tfrac{1}{16}
++ \tfrac{3}{64} + \tfrac{1}{64}
+\;=\; \frac{379}{256} \;\approx\; 1.4805 .
+\end{align*}
+It is the only vertex of degree $4$ with value below $\frac32$.
+
+\subsection*{Solvability}
+The appendix gives, for each of the $100$ vertices, a sequence of moves from $P$
+that places a pebble on it ($466$ moves in total, at most $46$ for one vertex).
+A move \texttt{ab}$\to$\texttt{cd} removes two pebbles from $(a,b)$ and adds one
+to $(c,d)$, and ``(has a pebble)'' marks vertices that already carry one. Each sequence
+can be checked by hand; we have also replayed all of them with three independent
+programs.
+
+\subsection*{Larger grids}
+We found solvable distributions with a degree-$4$ vertex of value below
+$\frac32$ on $n \times n$ grids for $n = 14, 18, 24, 32, 40, 48$, with the
+smallest such value settling near $1.4477$, a deficit of about $0.052$, from
+$n = 24$ on. These were certified by two independent solvers. In every example
+the low vertex lies at distance $6$ from the boundary, so the phenomenon appears
+to be tied to the boundary; we do not know whether such vertices exist far from
+the boundary. Under the hemmed distribution $P'$ of~\cite{PPS}, every degree-$4$
+vertex has value at least $1.97$ in the $10\times10$ to $12\times12$ examples
+and about $1.64$ in the larger ones.
+
+\subsection*{How it was found}
+By a randomized local search over solvable distributions on small grids, using
+moves that compress, split, merge and shift piles of pebbles, with every
+candidate's solvability decided exactly by two independent solvers.
+
+\begin{thebibliography}{1}
+\bibitem{PPS}
+J.~Petr, J.~Portier and S.~Stolarczyk,
+\emph{A new lower bound on the optimal pebbling number of the grid},
+Discrete Math.\ \textbf{346} (2023), 113212.
+\end{thebibliography}
+
+\newpage
+\appendix
+\section*{Appendix: a move sequence for every vertex}
+\begin{flushleft}
+\noindent\texttt{00}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{01}:\ {\footnotesize\ttfamily 11$\to$01}\par
+\noindent\texttt{02}:\ {\footnotesize\ttfamily 12$\to$02}\par
+\noindent\texttt{03}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{04}:\ {\footnotesize\ttfamily 03$\to$04}\par
+\noindent\texttt{05}:\ {\footnotesize\ttfamily 06$\to$05}\par
+\noindent\texttt{06}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{07}:\ {\footnotesize\ttfamily 08$\to$07}\par
+\noindent\texttt{08}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{09}:\ {\footnotesize\ttfamily 08$\to$09}\par
+\noindent\texttt{10}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{11}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{12}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{13}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{14}:\ {\footnotesize\ttfamily 13$\to$14}\par
+\noindent\texttt{15}:\ {\footnotesize\ttfamily 23$\to$13 13$\to$14 13$\to$14 14$\to$15}\par
+\noindent\texttt{16}:\ {\footnotesize\ttfamily 06$\to$16}\par
+\noindent\texttt{17}:\ {\footnotesize\ttfamily 06$\to$07 08$\to$07 07$\to$17}\par
+\noindent\texttt{18}:\ {\footnotesize\ttfamily 08$\to$18}\par
+\noindent\texttt{19}:\ {\footnotesize\ttfamily 08$\to$18 08$\to$18 18$\to$19}\par
+\noindent\texttt{20}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{21}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{22}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{23}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{24}:\ {\footnotesize\ttfamily 23$\to$24}\par
+\noindent\texttt{25}:\ {\footnotesize\ttfamily 13$\to$23 23$\to$24 23$\to$24 24$\to$25}\par
+\noindent\texttt{26}:\ {\footnotesize\ttfamily 08$\to$07 08$\to$07 07$\to$06 06$\to$16 06$\to$16 16$\to$26}\par
+\noindent\texttt{27}:\ {\footnotesize\ttfamily 38$\to$28 38$\to$28 28$\to$27}\par
+\noindent\texttt{28}:\ {\footnotesize\ttfamily 38$\to$28}\par
+\noindent\texttt{29}:\ {\footnotesize\ttfamily 38$\to$28 38$\to$28 28$\to$29}\par
+\noindent\texttt{30}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{31}:\ {\footnotesize\ttfamily 21$\to$31}\par
+\noindent\texttt{32}:\ {\footnotesize\ttfamily 22$\to$32}\par
+\noindent\texttt{33}:\ {\footnotesize\ttfamily 23$\to$33}\par
+\noindent\texttt{34}:\ {\footnotesize\ttfamily 13$\to$23 23$\to$33 23$\to$33 33$\to$34}\par
+\noindent\texttt{35}:\ {\footnotesize\ttfamily 12$\to$13 22$\to$23 08$\to$07 08$\to$07 07$\to$06 06$\to$05 06$\to$05 13$\to$14 13$\to$14 05$\to$15 14$\to$15 23$\to$24 23$\to$24 15$\to$25 24$\to$25 25$\to$35}\par
+\noindent\texttt{36}:\ {\footnotesize\ttfamily 00$\to$10 10$\to$11 10$\to$11 30$\to$20 11$\to$12 11$\to$12 20$\to$21 20$\to$21 12$\to$13 03$\to$13 12$\to$13 21$\to$22 21$\to$22 13$\to$23 22$\to$23 22$\to$23 13$\to$14 13$\to$14 23$\to$24 14$\to$24 23$\to$24 23$\to$24 08$\to$07 08$\to$07 07$\to$06 24$\to$25 24$\to$25 06$\to$16 06$\to$16 25$\to$26 16$\to$26 26$\to$36}\par
+\noindent\texttt{37}:\ {\footnotesize\ttfamily 38$\to$37}\par
+\noindent\texttt{38}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{39}:\ {\footnotesize\ttfamily 38$\to$39}\par
+\noindent\texttt{40}:\ {\footnotesize\ttfamily 30$\to$40}\par
+\noindent\texttt{41}:\ {\footnotesize\ttfamily 30$\to$31 21$\to$31 31$\to$41}\par
+\noindent\texttt{42}:\ {\footnotesize\ttfamily 12$\to$22 23$\to$22 22$\to$32 22$\to$32 32$\to$42}\par
+\noindent\texttt{43}:\ {\footnotesize\ttfamily 13$\to$23 23$\to$33 23$\to$33 33$\to$43}\par
+\noindent\texttt{44}:\ {\footnotesize\ttfamily 11$\to$21 20$\to$21 21$\to$31 30$\to$31 03$\to$13 12$\to$22 21$\to$22 22$\to$32 31$\to$32 13$\to$23 22$\to$23 13$\to$23 23$\to$33 32$\to$33 23$\to$33 23$\to$33 33$\to$43 33$\to$43 43$\to$44}\par
+\noindent\texttt{45}:\ {\footnotesize\ttfamily 00$\to$10 10$\to$11 10$\to$11 30$\to$20 11$\to$12 11$\to$12 20$\to$21 20$\to$21 12$\to$13 03$\to$13 12$\to$13 21$\to$22 21$\to$22 13$\to$23 22$\to$23 22$\to$23 13$\to$14 13$\to$14 23$\to$24 14$\to$24 23$\to$24 23$\to$24 08$\to$07 08$\to$07 07$\to$06 24$\to$25 24$\to$25 06$\to$16 06$\to$16 25$\to$26 16$\to$26 38$\to$37 38$\to$37 26$\to$36 37$\to$36 36$\to$46 46$\to$45}\par
+\noindent\texttt{46}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{47}:\ {\footnotesize\ttfamily 00$\to$10 10$\to$11 10$\to$11 30$\to$20 11$\to$12 11$\to$12 20$\to$21 20$\to$21 12$\to$13 03$\to$13 12$\to$13 21$\to$22 21$\to$22 13$\to$23 22$\to$23 22$\to$23 13$\to$14 13$\to$14 23$\to$24 14$\to$24 23$\to$24 23$\to$24 08$\to$07 08$\to$07 07$\to$06 24$\to$25 24$\to$25 06$\to$16 06$\to$16 25$\to$26 16$\to$26 38$\to$37 38$\to$37 26$\to$36 37$\to$36 36$\to$46 46$\to$47}\par
+\noindent\texttt{48}:\ {\footnotesize\ttfamily 38$\to$48}\par
+\noindent\texttt{49}:\ {\footnotesize\ttfamily 38$\to$48 38$\to$48 48$\to$49}\par
+\noindent\texttt{50}:\ {\footnotesize\ttfamily 80$\to$70 80$\to$70 70$\to$60 60$\to$50}\par
+\noindent\texttt{51}:\ {\footnotesize\ttfamily 11$\to$21 22$\to$21 10$\to$20 21$\to$31 21$\to$31 20$\to$30 20$\to$30 30$\to$40 30$\to$40 40$\to$41 31$\to$41 41$\to$51}\par
+\noindent\texttt{52}:\ {\footnotesize\ttfamily 03$\to$13 13$\to$12 13$\to$12 00$\to$10 12$\to$11 10$\to$11 12$\to$22 23$\to$22 10$\to$20 11$\to$21 11$\to$21 20$\to$30 20$\to$30 21$\to$31 21$\to$31 30$\to$40 30$\to$40 40$\to$41 31$\to$41 22$\to$32 22$\to$32 41$\to$42 32$\to$42 42$\to$52}\par
+\noindent\texttt{53}:\ {\footnotesize\ttfamily 83$\to$73 83$\to$73 73$\to$63 63$\to$53}\par
+\noindent\texttt{54}:\ {\footnotesize\ttfamily 11$\to$21 20$\to$21 21$\to$31 30$\to$31 03$\to$13 12$\to$22 21$\to$22 22$\to$32 31$\to$32 13$\to$23 22$\to$23 13$\to$23 23$\to$33 32$\to$33 23$\to$33 23$\to$33 33$\to$43 33$\to$43 83$\to$73 83$\to$73 73$\to$63 43$\to$53 63$\to$53 53$\to$54}\par
+\noindent\texttt{55}:\ {\footnotesize\ttfamily 00$\to$10 10$\to$11 10$\to$11 30$\to$20 11$\to$12 11$\to$12 20$\to$21 20$\to$21 12$\to$13 03$\to$13 12$\to$13 21$\to$22 21$\to$22 13$\to$23 22$\to$23 22$\to$23 13$\to$14 13$\to$14 23$\to$24 14$\to$24 23$\to$24 23$\to$24 08$\to$07 08$\to$07 07$\to$06 24$\to$25 24$\to$25 06$\to$16 06$\to$16 25$\to$26 16$\to$26 38$\to$37 38$\to$37 26$\to$36 37$\to$36 98$\to$88 88$\to$87 88$\to$87 87$\to$86 86$\to$76 76$\to$66 67$\to$66 36$\to$46 66$\to$56 46$\to$56 56$\to$55}\par
+\noindent\texttt{56}:\ {\footnotesize\ttfamily 00$\to$10 10$\to$11 10$\to$11 30$\to$20 11$\to$12 11$\to$12 20$\to$21 20$\to$21 12$\to$13 03$\to$13 12$\to$13 21$\to$22 21$\to$22 13$\to$23 22$\to$23 22$\to$23 13$\to$14 13$\to$14 23$\to$24 14$\to$24 23$\to$24 23$\to$24 08$\to$07 08$\to$07 07$\to$06 24$\to$25 24$\to$25 06$\to$16 06$\to$16 25$\to$26 16$\to$26 38$\to$37 38$\to$37 26$\to$36 37$\to$36 36$\to$46 46$\to$56}\par
+\noindent\texttt{57}:\ {\footnotesize\ttfamily 67$\to$57}\par
+\noindent\texttt{58}:\ {\footnotesize\ttfamily 38$\to$48 38$\to$48 48$\to$58}\par
+\noindent\texttt{59}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$78 88$\to$78 78$\to$68 67$\to$68 38$\to$48 38$\to$48 68$\to$58 48$\to$58 58$\to$59}\par
+\noindent\texttt{60}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{61}:\ {\footnotesize\ttfamily 80$\to$70 80$\to$70 70$\to$60 60$\to$61}\par
+\noindent\texttt{62}:\ {\footnotesize\ttfamily 83$\to$73 83$\to$73 73$\to$63 63$\to$62}\par
+\noindent\texttt{63}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{64}:\ {\footnotesize\ttfamily 83$\to$73 83$\to$73 73$\to$63 63$\to$64}\par
+\noindent\texttt{65}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$87 88$\to$87 87$\to$86 86$\to$76 76$\to$66 67$\to$66 66$\to$65}\par
+\noindent\texttt{66}:\ {\footnotesize\ttfamily 67$\to$66}\par
+\noindent\texttt{67}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{68}:\ {\footnotesize\ttfamily 67$\to$68}\par
+\noindent\texttt{69}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$78 88$\to$78 78$\to$68 67$\to$68 68$\to$69}\par
+\noindent\texttt{70}:\ {\footnotesize\ttfamily 80$\to$70}\par
+\noindent\texttt{71}:\ {\footnotesize\ttfamily 80$\to$81 80$\to$81 81$\to$71}\par
+\noindent\texttt{72}:\ {\footnotesize\ttfamily 83$\to$82 83$\to$82 82$\to$72}\par
+\noindent\texttt{73}:\ {\footnotesize\ttfamily 83$\to$73}\par
+\noindent\texttt{74}:\ {\footnotesize\ttfamily 83$\to$73 83$\to$73 73$\to$74}\par
+\noindent\texttt{75}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$87 88$\to$87 87$\to$86 86$\to$76 76$\to$75}\par
+\noindent\texttt{76}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{77}:\ {\footnotesize\ttfamily 67$\to$77}\par
+\noindent\texttt{78}:\ {\footnotesize\ttfamily 88$\to$78}\par
+\noindent\texttt{79}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$78 88$\to$78 78$\to$79}\par
+\noindent\texttt{80}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{81}:\ {\footnotesize\ttfamily 80$\to$81}\par
+\noindent\texttt{82}:\ {\footnotesize\ttfamily 83$\to$82}\par
+\noindent\texttt{83}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{84}:\ {\footnotesize\ttfamily 83$\to$84}\par
+\noindent\texttt{85}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$78 88$\to$78 78$\to$77 67$\to$77 77$\to$76 76$\to$86 86$\to$85}\par
+\noindent\texttt{86}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{87}:\ {\footnotesize\ttfamily 88$\to$87}\par
+\noindent\texttt{88}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{89}:\ {\footnotesize\ttfamily 88$\to$89}\par
+\noindent\texttt{90}:\ {\footnotesize\ttfamily 80$\to$90}\par
+\noindent\texttt{91}:\ {\footnotesize\ttfamily 80$\to$81 80$\to$81 81$\to$91}\par
+\noindent\texttt{92}:\ {\footnotesize\ttfamily 83$\to$82 83$\to$82 82$\to$92}\par
+\noindent\texttt{93}:\ {\footnotesize\ttfamily 83$\to$93}\par
+\noindent\texttt{94}:\ {\footnotesize\ttfamily 83$\to$84 83$\to$84 84$\to$94}\par
+\noindent\texttt{95}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$78 88$\to$78 78$\to$77 67$\to$77 77$\to$76 76$\to$86 83$\to$84 83$\to$84 84$\to$85 86$\to$85 85$\to$95}\par
+\noindent\texttt{96}:\ {\footnotesize\ttfamily 98$\to$88 88$\to$78 88$\to$78 78$\to$77 67$\to$77 77$\to$76 76$\to$86 86$\to$96}\par
+\noindent\texttt{97}:\ {\footnotesize\ttfamily 98$\to$97}\par
+\noindent\texttt{98}:\ {\footnotesize\ttfamily \textrm{\itshape (has a pebble)}}\par
+\noindent\texttt{99}:\ {\footnotesize\ttfamily 98$\to$99}\par
+\end{flushleft}
+\end{document}

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pypebbling"
+version = "0.1.1"
+description = "Exact pebbling reachability and solvability on graphs, with replayable move certificates and an independent checker"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["ortools>=9.15"]
+license = "MIT"
+authors = [{ name = "Eric Lee" }]
+
+[project.urls]
+Repository = "https://github.com/hynoph/pebbling"
+
+[project.optional-dependencies]
+test = ["pytest>=8.4"]
+
+[tool.setuptools]
+packages = ["pebbling", "naivecheck"]
